@@ -279,7 +279,7 @@
 
         // B. 鼠标滚轮 (Wheel)
         window.addEventListener('wheel', (e) => {
-            if (Math.abs(e.deltaY) < 30) return;
+            if (Math.abs(e.deltaY) < 3) return;
             if (e.deltaY > 0) updateSlides(currentSlide + 1);
             else updateSlides(currentSlide - 1);
         });
