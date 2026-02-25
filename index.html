@@ -136,16 +136,22 @@
 
     <div class="swiper-container">
         
-        <!-- PAGE 1 -->
+         <!-- PAGE 1: HERO (已植入 Logo) -->
         <div class="slide active">
             <div id="canvas-container"></div>
             <div class="hero-content">
-                <p style="color: var(--neon-gold); letter-spacing: 4px;">SEMICON CHINA 2026</p>
+                <!-- JEM Logo Badge -->
+                <div class="logo-badge">
+                    <img src="https://www.jem-net.co.jp/en/images/common/flogo.png" alt="JEM Logo" class="jem-logo" style="height: 60px;">
+                </div>
+                
                 <h1>CORE ERA<br>SMART FUTURE</h1>
-                <p>2026.03.25-27 | SHANGHAI</p>
+                <p style="margin-top: 20px; font-size: 1.1rem; letter-spacing: 2px;">SEMICON CHINA 2026</p>
+                <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 5px;">2026.03.25-27 | SHANGHAI SNIEC</p>
             </div>
-            <div class="arrow-up" onclick="updateSlides(1)">⌃</div>
+            <div class="arrow-up">⌃</div>
         </div>
+
 
         <!-- PAGE 2 -->
         <div class="slide bg-circuit">
@@ -177,25 +183,43 @@
             <div class="arrow-up" onclick="updateSlides(3)">⌃</div>
         </div>
 
-        <!-- PAGE 4 -->
+                <!-- PAGE 4: ABOUT US (已植入 Logo 与展位) -->
         <div class="slide bg-map">
             <h2>ABOUT US</h2>
             <div class="glass-card">
-                <h3 style="font-size: 1.4rem; margin-bottom: 10px;">FUTURE SILICON INC.</h3>
-                <p style="font-size: 0.9rem; color: #bbb; line-height: 1.5; margin-bottom: 20px;">
-                    [公司名] 致力于为全球客户提供高性能模拟芯片与混合信号解决方案。
-                </p>
-                <div class="info-grid">
-                    <div class="info-box"><div class="info-label">HALL</div><div class="info-val">N3</div></div>
-                    <div class="info-box"><div class="info-label">BOOTH</div><div class="info-val">3A05</div></div>
+                <!-- Logo Badge Small -->
+                <div style="background: white; border-radius: 4px; padding: 10px; display: inline-block; margin-bottom: 15px;">
+                     <img src="https://www.jem-net.co.jp/en/images/common/flogo.png" alt="JEM" style="height: 60px;">
                 </div>
+                
+                <h3 style="font-size: 1.2rem; margin-bottom: 10px;">JAPAN ELECTRONIC MATERIALS</h3>
+                <p style="font-size: 0.9rem; color: #bbb; line-height: 1.5; margin-bottom: 10px;">
+                    全球领先的探针卡制造商。
+                </p>
+                 <p style="font-size: 0.85rem; color: #888; line-height: 1.4; margin-bottom: 20px;">
+                    Providing advanced Probe Card solutions for Wafer Test to support the future of semiconductors.
+                </p>
+                
+                <!-- 展位信息 -->
+                <div class="info-grid">
+                    <div class="info-box">
+                        <div class="info-label">HALL / 展馆</div>
+                        <div class="info-val">N3</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">BOOTH / 展位</div>
+                        <div class="info-val">3300</div>
+                    </div>
+                </div>
+
+                <!-- 一键导航 -->
                 <a href="https://uri.amap.com/marker?position=121.5636,31.2106&name=上海新国际博览中心" target="_blank" class="nav-btn">
                     📍 导航至：上海新国际博览中心
                 </a>
             </div>
-            <div class="arrow-up" onclick="updateSlides(4)">⌃</div>
+            <div class="arrow-up">⌃</div>
         </div>
-
+        
         <!-- PAGE 5 -->
         <div class="slide" style="background: #000;">
             <div class="end-text">SEE YOU<br>THERE</div>
