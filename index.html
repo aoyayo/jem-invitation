@@ -2,7 +2,6 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <!-- 视口设置：适配刘海屏，禁止缩放 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>芯纪元·智未来 | SEMICON China 2026</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -21,7 +20,7 @@
             background: var(--theme-blue); 
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
             overflow: hidden; 
-            touch-action: none; /* 关键：禁止浏览器原生手势 */
+            touch-action: none; 
             color: white;
         }
 
@@ -33,7 +32,7 @@
             transition: opacity 0.6s ease;
         }
         .scanner-line {
-            width: 80%; height: 2px; background: var(--neon-cyan);
+            width: 80%; max-width: 400px; height: 2px; background: var(--neon-cyan);
             box-shadow: 0 0 20px var(--neon-cyan);
             animation: scan 2s infinite alternate;
         }
@@ -48,39 +47,26 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             padding: 20px; text-align: center;
             background-size: cover; background-position: center;
-            /* 默认状态：隐藏在底部 */
             transform: translateY(100%);
             opacity: 0; 
             transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s;
-            pointer-events: none; /* 非活跃页面禁止点击 */
-            z-index: 1;
+            pointer-events: none; z-index: 1;
         }
 
-        /* 状态：当前页 */
-        .slide.active {
-            transform: translateY(0);
-            opacity: 1;
-            z-index: 10; /* 永远在最上层 */
-            pointer-events: auto;
+        /* 电脑端视觉修正：内容不撑满全屏，保持手机比例的美感 */
+        @media (min-width: 768px) {
+            .slide { padding: 0 20%; } /* 两侧留白 */
+            .glass-card { min-width: 400px; }
+            h1 { font-size: 4.5rem !important; }
         }
 
-        /* 状态：上一页 (飞到上面去了) */
-        .slide.prev {
-            transform: translateY(-100%);
-            opacity: 0;
-            z-index: 5;
-        }
-
-        /* 状态：下一页 (在下面等着) */
-        .slide.next {
-            transform: translateY(100%);
-            opacity: 0;
-            z-index: 5;
-        }
+        .slide.active { transform: translateY(0); opacity: 1; z-index: 10; pointer-events: auto; }
+        .slide.prev { transform: translateY(-100%); opacity: 0; z-index: 5; }
+        .slide.next { transform: translateY(100%); opacity: 0; z-index: 5; }
 
         /* === 视觉组件 === */
         #canvas-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
-        .hero-content { z-index: 5; pointer-events: none; margin-top: 150px; transition: transform 0.8s; }
+        .hero-content { z-index: 5; pointer-events: none; margin-top: 10vh; transition: transform 0.8s; }
         
         h1 { 
             font-size: 3.2rem; font-weight: 800; line-height: 1.1;
@@ -102,14 +88,16 @@
         .glass-card {
             background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 30px; border-radius: 16px; margin: 20px; width: 90%; max-width: 450px;
+            padding: 30px; border-radius: 16px; margin: 20px; width: 90%; max-width: 500px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transition: transform 0.6s 0.1s; /* 内容延迟动画 */
+            transition: transform 0.6s 0.1s;
+            /* 解决PC上鼠标拖拽时选中文字的问题 */
+            user-select: none; -webkit-user-select: none;
         }
-
-        /* 进场动画：让内容比背景慢一点出来 */
+        
+        /* 内容视差进场 */
         .slide.active .glass-card { transform: translateY(0); opacity: 1; }
-        .slide:not(.active) .glass-card { transform: translateY(50px); opacity: 0; }
+        .slide:not(.active) .glass-card { transform: translateY(60px); opacity: 0; }
 
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
         .info-box { background: rgba(0, 240, 255, 0.1); border: 1px solid var(--neon-cyan); padding: 15px 5px; border-radius: 8px; }
@@ -121,12 +109,12 @@
             display: block; padding: 15px; width: 100%; font-weight: bold;
             border-radius: 4px; margin-top: 20px; letter-spacing: 1px;
             clip-path: polygon(5% 0, 100% 0, 100% 100%, 95% 100%, 0 100%, 0 100%, 0 0);
-            pointer-events: auto;
+            pointer-events: auto; cursor: pointer;
         }
 
         .arrow-up {
             position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            animation: bounce 2s infinite; opacity: 0.7; z-index: 100; font-size: 20px;
+            animation: bounce 2s infinite; opacity: 0.7; z-index: 100; font-size: 20px; cursor: pointer;
         }
         
         .end-text {
@@ -142,7 +130,7 @@
 
     <div id="loader">
         <div class="scanner-line"></div>
-        <div class="loading-text">INITIALIZING... 100%</div>
+        <div class="loading-text">SYSTEM LOADING... 100%</div>
     </div>
 
     <div class="swiper-container">
@@ -155,7 +143,7 @@
                 <h1>CORE ERA<br>SMART FUTURE</h1>
                 <p>2026.03.25-27 | SHANGHAI</p>
             </div>
-            <div class="arrow-up">⌃</div>
+            <div class="arrow-up" onclick="updateSlides(1)">⌃</div>
         </div>
 
         <!-- PAGE 2 -->
@@ -163,13 +151,13 @@
             <h2>BREAKING LIMITS</h2>
             <div class="glass-card">
                 <p style="line-height: 1.8; font-size: 1.1rem; color: #ddd;">
-                    ver5 摩尔定律的物理极限并非终点。<br>
+                    摩尔定律的物理极限并非终点。<br>
                     从 <strong>2nm 先进工艺</strong> 到 <strong>3D 异构封装</strong>，<br>
                     我们正在重新定义计算的边界。<br><br>
                     诚邀您见证这一历史时刻。
                 </p>
             </div>
-            <div class="arrow-up">⌃</div>
+            <div class="arrow-up" onclick="updateSlides(2)">⌃</div>
         </div>
 
         <!-- PAGE 3 -->
@@ -185,7 +173,7 @@
                     <div style="margin-top:5px;">Forum: Chiplet & 封装技术</div>
                 </div>
             </div>
-            <div class="arrow-up">⌃</div>
+            <div class="arrow-up" onclick="updateSlides(3)">⌃</div>
         </div>
 
         <!-- PAGE 4 -->
@@ -204,7 +192,7 @@
                     📍 导航至：上海新国际博览中心
                 </a>
             </div>
-            <div class="arrow-up">⌃</div>
+            <div class="arrow-up" onclick="updateSlides(4)">⌃</div>
         </div>
 
         <!-- PAGE 5 -->
@@ -239,16 +227,15 @@
         }
         animate();
 
-        // === 2. 核心修复：全局状态管理 ===
+        // === 2. 全局状态管理 (The Engine) ===
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const totalSlides = slides.length;
         
         let isAnimating = false;
-        const COOLDOWN = 800; // 动画冷却时间
+        const COOLDOWN = 800; 
         let lastTime = 0;
 
-        // 初始化：确保页面都在正确位置
         function initSlides() {
             slides.forEach((s, i) => {
                 if(i === 0) s.classList.add('active');
@@ -261,70 +248,78 @@
             if(newIndex < 0 || newIndex >= totalSlides) return;
             
             const now = Date.now();
-            if(now - lastTime < COOLDOWN) return; // 防抖
+            if(now - lastTime < COOLDOWN) return; 
             lastTime = now;
             isAnimating = true;
 
             currentSlide = newIndex;
 
-            // 关键逻辑：全量遍历，强制归位
-            // 每一个页面只有三种命运：Active (当前), Prev (上), Next (下)
             slides.forEach((slide, index) => {
-                // 清除旧状态
                 slide.classList.remove('active', 'prev', 'next');
-
-                if (index === currentSlide) {
-                    slide.classList.add('active');
-                } else if (index < currentSlide) {
-                    slide.classList.add('prev'); // 在当前页之前的，全部踢到上面去
-                } else {
-                    slide.classList.add('next'); // 在当前页之后的，全部踢到下面去
-                }
+                if (index === currentSlide) slide.classList.add('active');
+                else if (index < currentSlide) slide.classList.add('prev');
+                else slide.classList.add('next');
             });
 
             setTimeout(() => { isAnimating = false; }, COOLDOWN);
         }
 
-        // === 3. 触摸逻辑 (优化阈值) ===
-        let touchStartY = 0;
+        // === 3. 统一交互层 (Input Handler) ===
         
-        document.addEventListener('touchstart', e => {
-            touchStartY = e.touches[0].clientY;
-        }, { passive: false });
-
+        // A. 触摸 (Touch)
+        let touchStartY = 0;
+        document.addEventListener('touchstart', e => touchStartY = e.touches[0].clientY, { passive: false });
         document.addEventListener('touchmove', e => {
-             // 允许 nav-btn 点击，禁止其他区域的默认滚动
-            if(!e.target.closest('.nav-btn')) {
-                e.preventDefault();
-            }
+            if(!e.target.closest('.nav-btn') && !e.target.closest('.arrow-up')) e.preventDefault();
         }, { passive: false });
-
         document.addEventListener('touchend', e => {
-            const touchEndY = e.changedTouches[0].clientY;
-            const diff = touchStartY - touchEndY;
-            
-            // 阈值 60px
-            if (Math.abs(diff) > 60) { 
-                if (diff > 0) updateSlides(currentSlide + 1); // 上滑 -> 下一页
-                else updateSlides(currentSlide - 1); // 下滑 -> 上一页
-            }
+            const diff = touchStartY - e.changedTouches[0].clientY;
+            if (Math.abs(diff) > 60) diff > 0 ? updateSlides(currentSlide + 1) : updateSlides(currentSlide - 1);
         }, { passive: false });
 
-        // === PC 滚轮支持 ===
+        // B. 鼠标滚轮 (Wheel)
         window.addEventListener('wheel', (e) => {
             if (Math.abs(e.deltaY) < 30) return;
             if (e.deltaY > 0) updateSlides(currentSlide + 1);
             else updateSlides(currentSlide - 1);
         });
 
-        // 窗口调整
+        // C. 鼠标拖拽 (Mouse Drag - PC Only)
+        let isDragging = false;
+        let startY = 0;
+        
+        document.addEventListener('mousedown', e => {
+            // 排除点击按钮的情况
+            if(e.target.closest('.nav-btn') || e.target.closest('.arrow-up')) return;
+            isDragging = true;
+            startY = e.clientY;
+        });
+        
+        document.addEventListener('mouseup', e => {
+            if(!isDragging) return;
+            isDragging = false;
+            const diff = startY - e.clientY;
+            if(Math.abs(diff) > 60) {
+                diff > 0 ? updateSlides(currentSlide + 1) : updateSlides(currentSlide - 1);
+            }
+        });
+        
+        // 丢失焦点时取消拖拽
+        document.addEventListener('mouseleave', () => isDragging = false);
+
+        // D. 键盘 (Keyboard)
+        document.addEventListener('keydown', e => {
+            if(e.key === 'ArrowDown' || e.key === 'PageDown') updateSlides(currentSlide + 1);
+            if(e.key === 'ArrowUp' || e.key === 'PageUp') updateSlides(currentSlide - 1);
+        });
+
+        // E. 窗口适配
         window.addEventListener('resize', () => {
             renderer.setSize(window.innerWidth, window.innerHeight);
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
         });
 
-        // 移除 Loading
         window.onload = () => {
             setTimeout(() => {
                 document.getElementById('loader').style.opacity = '0';
